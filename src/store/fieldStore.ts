@@ -1,11 +1,11 @@
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TField, TFieldCollection } from "@/types/field";
+import { FieldType, TField, TFieldCollection } from "@/types/field";
 
 type FieldStore = {
   fields: TFieldCollection;
-  addFields: (fieldType: string) => void;
+  addFields: (fieldType: FieldType) => void;
   removeRow: (rowIndex: number) => void;
   updateField: (
     rowIndex: number,
