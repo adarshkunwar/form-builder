@@ -4,9 +4,7 @@ import { fieldsArray } from "@/data/field";
 import useFieldStore from "@/store/fieldStore";
 
 const FieldOptionCollection = () => {
-  const { fields, addFields } = useFieldStore();
-
-  console.log(fields);
+  const { addFields } = useFieldStore();
 
   return (
     <div>
