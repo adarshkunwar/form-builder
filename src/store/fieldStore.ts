@@ -5,7 +5,7 @@ import { FieldType, TField, TFieldCollection } from "@/types/field";
 
 type FieldStore = {
   fields: TFieldCollection;
-  addFields: (fieldType: FieldType) => void;
+  addFields: (fieldType: FieldType, rowNumber?: number) => void;
   removeRow: (rowIndex: number) => void;
   updateField: (
     rowIndex: number,
@@ -18,20 +18,24 @@ export const useFieldStore = create<FieldStore>()(
   persist(
     (set) => ({
       fields: [],
-      addFields: (fieldType) => {
+      addFields: (fieldType, rowNumber) => {
         set((state) => {
-          const targetRowIndex = state.fields.length + 1;
+          const targetRowIndex = rowNumber ?? state.fields.length + 1;
           const newField: TField = {
             Name: "",
             rowNumber: targetRowIndex,
             type: fieldType,
-            description: "",
+            description: "hajkjdsfkaj",
             placeholder: "",
             className: "",
             isRequired: false,
             isDisabled: false,
           };
-          const updatedFields = [...state.fields, [newField]];
+          const updatedFields = rowNumber
+            ? state.fields.map((row, i) => {
+                return i === rowNumber ? [...row, newField] : row;
+              })
+            : [...state.fields, [newField]];
           return { fields: updatedFields };
         });
       },

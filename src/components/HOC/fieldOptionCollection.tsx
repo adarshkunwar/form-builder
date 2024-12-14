@@ -20,6 +20,8 @@ const FieldOptionCollection = () => {
           </div>
         );
       })}
+
+      <button onClick={() => localStorage.clear()}>delete localstorage</button>
     </div>
   );
 };
