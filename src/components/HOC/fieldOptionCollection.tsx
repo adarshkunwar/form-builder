@@ -1,29 +1,21 @@
 "use client";
 import FieldOption from "@/components/ui/fieldOption";
-
-const fields = [
-  "checkbox",
-  "date-picker",
-  "file-input",
-  "input",
-  "input-otp",
-  "multi-select",
-  "password",
-  "phone",
-  "select",
-  "slider",
-  "switch",
-];
+import { fieldsArray } from "@/data/field";
+import useFieldStore from "@/store/fieldStore";
 
 const FieldOptionCollection = () => {
+  const { fields, addFields } = useFieldStore();
+
+  console.log(fields);
+
   return (
     <div>
-      {fields.map((field, index) => {
+      {fieldsArray.map((field, index) => {
         return (
           <div key={index}>
             <FieldOption
               name={field}
-              onclick={() => console.log("clicked")}
+              onclick={() => addFields(field)}
               key={index}
             />
           </div>
