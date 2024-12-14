@@ -1,4 +1,5 @@
 import FieldOptionCollection from "@/components/HOC/fieldOptionCollection";
+import FieldOptionArranger from "@/components/pageComponents/form/fieldOptionArranger";
 import FieldOptionRenderer from "@/components/pageComponents/form/FieldOptionRenderer";
 
 const FormPage = () => {
@@ -8,7 +9,7 @@ const FormPage = () => {
         <FieldOptionCollection />
       </div>
       <div className="col-span-4">
-        <FieldOptionRenderer />
+        <FieldOptionArranger />
       </div>
       <div className="col-span-6">
         <FieldOptionRenderer />
