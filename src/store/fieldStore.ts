@@ -20,22 +20,23 @@ export const useFieldStore = create<FieldStore>()(
       fields: [],
       addFields: (fieldType, rowNumber) => {
         set((state) => {
-          const targetRowIndex = rowNumber ?? state.fields.length + 1;
+          const targetRowIndex = rowNumber ?? state.fields.length;
           const newField: TField = {
             Name: "",
             rowNumber: targetRowIndex,
             type: fieldType,
-            description: "hajkjdsfkaj",
+            description: "Defualt description",
             placeholder: "",
             className: "",
             isRequired: false,
             isDisabled: false,
           };
-          const updatedFields = rowNumber
-            ? state.fields.map((row, i) => {
-                return i === rowNumber ? [...row, newField] : row;
-              })
-            : [...state.fields, [newField]];
+          const updatedFields =
+            rowNumber !== undefined
+              ? state.fields.map((row, i) => {
+                  return i === rowNumber ? [...row, newField] : row;
+                })
+              : [...state.fields, [newField]];
           return { fields: updatedFields };
         });
       },
