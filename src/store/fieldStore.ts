@@ -35,15 +35,35 @@ export const useFieldStore = create<FieldStore>()(
           const sourceRow = [...newFields[sourceRowIndex]];
           const destRow = [...newFields[destRowIndex]];
 
-          // Perform the swap
-          const temp = sourceRow[sourceIndex];
-          sourceRow[sourceIndex] = destRow[destIndex];
-          destRow[destIndex] = temp;
+          console.log({
+            sourceRowIndex,
+            sourceIndex,
+            destRowIndex,
+            destIndex,
+          });
+          if (sourceRowIndex === destRowIndex && sourceIndex !== destIndex) {
+            const updatedRow = [...sourceRow]; // Create a copy of the row
+            const temp = updatedRow[sourceIndex];
+            updatedRow[sourceIndex] = updatedRow[destIndex];
+            updatedRow[destIndex] = temp;
 
-          // Update the state
-          newFields[sourceRowIndex] = sourceRow;
-          newFields[destRowIndex] = destRow;
+            console.log({ temp, updatedRow });
 
+            // Update the state correctly
+            newFields[sourceRowIndex] = updatedRow; // Update only the relevant row
+          } else {
+            // Swap between different rows
+            const updatedSourceRow = [...sourceRow];
+            const updatedDestRow = [...destRow];
+
+            const temp = updatedSourceRow[sourceIndex];
+            updatedSourceRow[sourceIndex] = updatedDestRow[destIndex];
+            updatedDestRow[destIndex] = temp;
+
+            // Update the state
+            newFields[sourceRowIndex] = updatedSourceRow;
+            newFields[destRowIndex] = updatedDestRow;
+          }
           return { fields: newFields };
         });
       },
