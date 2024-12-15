@@ -1,60 +1,169 @@
 "use client";
-import FieldOptionArrangeSingleCard from "@/components/ui/field-option-arrange-single-card";
+import React from "react";
+import {
+  DndContext,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+  SortableContext,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+import { Trash2, Grip } from "lucide-react";
+import FieldOptionArrangeSingleCard from "@/components/HOC/fieldListSingleCard";
 import useFieldStore from "@/store/fieldStore";
-import { Trash2 } from "lucide-react";
 import { FieldType, TField, TFieldRow } from "@/types/field";
 
-type FieldRowProps = {
-  fieldRow: TFieldRow;
-  addField: (fieldType: FieldType) => void;
-  removeField: (colIndex: number) => void;
-  updateField: (colIndex: number, fieldData: Partial<TField>) => void;
-};
-
-const FieldRow = ({
-  fieldRow,
-  addField,
+// Sortable Field Item Component
+const SortableFieldItem = ({
+  field,
+  colIndex,
+  rowIndex,
   removeField,
   updateField,
-}: FieldRowProps) => {
+  addField,
+}: {
+  field: TField;
+  colIndex: number;
+  rowIndex: number;
+  removeField: (colIndex: number) => void;
+  updateField: (colIndex: number, fieldData: Partial<TField>) => void;
+  addField: (fieldType: FieldType) => void;
+}) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: `${rowIndex}-${colIndex}`,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
-    <div className="flex gap-4">
-      {fieldRow.map((field, colIndex) => (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex w-full items-center gap-2"
+    >
+      <div className="flex w-full flex-1 gap-1">
         <div
-          key={`${field.type}-${colIndex}`}
-          className="flex w-full items-center gap-2"
+          {...attributes}
+          {...listeners}
+          className="mr-2 flex cursor-move items-center"
         >
-          <div className="flex w-full flex-1 gap-1">
-            <div className="w-full flex-1">
-              <FieldOptionArrangeSingleCard
-                field={field}
-                updateField={(updatedField) => {
-                  updateField(colIndex, updatedField);
-                }}
-              />
-            </div>
-            <button
-              onClick={() => removeField(colIndex)}
-              className="flex size-8 items-center justify-center border bg-red-500 p-2 text-white"
-            >
-              <Trash2 />
-            </button>
+          <Grip className="text-gray-400" />
+        </div>
+        <div className="flex w-full flex-1 gap-1">
+          <div className="w-full flex-1">
+            <FieldOptionArrangeSingleCard
+              field={field}
+              updateField={(updatedField) => {
+                updateField(colIndex, updatedField);
+              }}
+            />
           </div>
           <button
-            onClick={() => addField(field.type)}
-            className="flex size-8 items-center justify-center rounded-full border bg-white p-2"
+            onClick={() => removeField(colIndex)}
+            className="flex size-8 items-center justify-center border bg-red-500 p-2 text-white"
           >
-            +
+            <Trash2 />
           </button>
         </div>
-      ))}
+        <button
+          onClick={() => addField(field.type)}
+          className="flex size-8 items-center justify-center rounded-full border bg-white p-2"
+        >
+          +
+        </button>
+      </div>
     </div>
   );
 };
 
-const FieldOptionArranger = () => {
-  const { fields, addFields, removeRow, updateField } = useFieldStore();
+// Field Row Component
+const FieldRow = ({
+  fieldRow,
+  rowIndex,
+  addField,
+  removeField,
+  updateField,
+}: {
+  fieldRow: TFieldRow;
+  rowIndex: number;
+  addField: (fieldType: FieldType) => void;
+  removeField: (colIndex: number) => void;
+  updateField: (colIndex: number, fieldData: Partial<TField>) => void;
+}) => {
+  // Create unique IDs for each field in this row
+  const fieldIds = fieldRow.map((_, colIndex) => `${rowIndex}-${colIndex}`);
 
+  return (
+    <SortableContext items={fieldIds} strategy={rectSortingStrategy}>
+      <div className="flex gap-4">
+        {fieldRow.map((field, colIndex) => (
+          <SortableFieldItem
+            key={`${rowIndex}-${colIndex}`}
+            field={field}
+            colIndex={colIndex}
+            rowIndex={rowIndex}
+            removeField={removeField}
+            updateField={updateField}
+            addField={addField}
+          />
+        ))}
+      </div>
+    </SortableContext>
+  );
+};
+
+// Main Field Option Arranger Component
+const FieldOptionArranger = () => {
+  const { fields, addFields, removeRow, updateField, reorderFields } =
+    useFieldStore();
+
+  // Setup sensors for pointer and keyboard interactions
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+
+  // Handle drag end event
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) return;
+
+    // Extract row and column indices
+    const [activeRowIndex, activeColIndex] = (active.id as string)
+      .split("-")
+      .map(Number);
+    const [overRowIndex, overColIndex] = (over.id as string)
+      .split("-")
+      .map(Number);
+
+    // Reorder fields
+    reorderFields(activeRowIndex, activeColIndex, overRowIndex, overColIndex);
+  };
+
+  // Handlers for adding, removing, and updating fields
   const handleAddField = (rowIndex: number) => (fieldType: FieldType) => {
     console.log(`Adding field of type ${fieldType} at row ${rowIndex}`);
     addFields(fieldType, rowIndex);
@@ -72,17 +181,24 @@ const FieldOptionArranger = () => {
     };
 
   return (
-    <div className="flex flex-col gap-4">
-      {fields.map((fieldRow, rowIndex) => (
-        <FieldRow
-          key={`row-${rowIndex}`}
-          fieldRow={fieldRow}
-          addField={handleAddField(rowIndex)}
-          removeField={removeField(rowIndex)}
-          updateField={handleUpdateField(rowIndex)}
-        />
-      ))}
-    </div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCorners}
+      onDragEnd={handleDragEnd}
+    >
+      <div className="flex flex-col gap-4">
+        {fields.map((fieldRow, rowIndex) => (
+          <FieldRow
+            key={`row-${rowIndex}`}
+            fieldRow={fieldRow}
+            rowIndex={rowIndex}
+            addField={handleAddField(rowIndex)}
+            removeField={removeField(rowIndex)}
+            updateField={handleUpdateField(rowIndex)}
+          />
+        ))}
+      </div>
+    </DndContext>
   );
 };
 

@@ -7,6 +7,12 @@ type FieldStore = {
   fields: TFieldCollection;
   addFields: (fieldType: FieldType, rowNumber?: number) => void;
   removeRow: (rowIndex: number, colIndex: number) => void;
+  reorderFields: (
+    sourceRowIndex: number,
+    sourceIndex: number,
+    destRowIndex: number,
+    destIndex: number,
+  ) => void;
   updateField: (
     rowIndex: number,
     fieldIndex: number,
@@ -18,10 +24,34 @@ export const useFieldStore = create<FieldStore>()(
   persist(
     (set) => ({
       fields: [],
+      reorderFields: (
+        sourceRowIndex: number,
+        sourceIndex: number,
+        destRowIndex: number,
+        destIndex: number,
+      ) => {
+        set((state) => {
+          const newFields = [...state.fields];
+          const sourceRow = [...newFields[sourceRowIndex]];
+          const destRow = [...newFields[destRowIndex]];
+
+          // Perform the swap
+          const temp = sourceRow[sourceIndex];
+          sourceRow[sourceIndex] = destRow[destIndex];
+          destRow[destIndex] = temp;
+
+          // Update the state
+          newFields[sourceRowIndex] = sourceRow;
+          newFields[destRowIndex] = destRow;
+
+          return { fields: newFields };
+        });
+      },
       addFields: (fieldType, rowNumber) => {
         set((state) => {
           const targetRowIndex = rowNumber ?? state.fields.length;
           const newField: TField = {
+            id: Date.now(),
             Name: "",
             rowNumber: targetRowIndex,
             type: fieldType,
