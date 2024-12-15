@@ -5,7 +5,6 @@ import { Trash2 } from "lucide-react";
 import { FieldType, TField, TFieldRow } from "@/types/field";
 
 type FieldRowProps = {
-  rowIndex: number;
   fieldRow: TFieldRow;
   addField: (fieldType: FieldType) => void;
   removeField: (colIndex: number) => void;
@@ -13,7 +12,6 @@ type FieldRowProps = {
 };
 
 const FieldRow = ({
-  rowIndex,
   fieldRow,
   addField,
   removeField,
@@ -78,7 +76,6 @@ const FieldOptionArranger = () => {
       {fields.map((fieldRow, rowIndex) => (
         <FieldRow
           key={`row-${rowIndex}`}
-          rowIndex={rowIndex}
           fieldRow={fieldRow}
           addField={handleAddField(rowIndex)}
           removeField={removeField(rowIndex)}
