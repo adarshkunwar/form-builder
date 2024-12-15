@@ -5,7 +5,7 @@ import { TFieldRow } from "@/types/field";
 
 const FieldRow = ({ fieldRow }: { fieldRow: TFieldRow }) => {
   return (
-    <div>
+    <div className="flex">
       {fieldRow.map((field, i) => (
         <Field
           key={i}
