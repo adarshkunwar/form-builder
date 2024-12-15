@@ -9,17 +9,19 @@ const FieldOptionCollection = () => {
   return (
     <div className="flex flex-col gap-5">
       <h1 className="text-2xl font-semibold">Fields</h1>
-      {fieldsArray.map((field, index) => {
-        return (
-          <div key={index}>
-            <FieldOption
-              name={field}
-              onclick={() => addFields(field)}
-              key={index}
-            />
-          </div>
-        );
-      })}
+      <div className="flex gap-2 md:flex-col">
+        {fieldsArray.map((field, index) => {
+          return (
+            <div key={index}>
+              <FieldOption
+                name={field}
+                onclick={() => addFields(field)}
+                key={index}
+              />
+            </div>
+          );
+        })}
+      </div>
 
       <button onClick={() => localStorage.clear()}>delete localstorage</button>
     </div>
