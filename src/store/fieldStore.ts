@@ -6,7 +6,7 @@ import { FieldType, TField, TFieldCollection } from "@/types/field";
 type FieldStore = {
   fields: TFieldCollection;
   addFields: (fieldType: FieldType, rowNumber?: number) => void;
-  removeRow: (rowIndex: number) => void;
+  removeRow: (rowIndex: number, colIndex: number) => void;
   updateField: (
     rowIndex: number,
     fieldIndex: number,
@@ -40,10 +40,20 @@ export const useFieldStore = create<FieldStore>()(
           return { fields: updatedFields };
         });
       },
-      removeRow: (rowIndex: number) => {
-        set((state) => ({
-          fields: state.fields.filter((_, index) => index !== rowIndex),
-        }));
+      removeRow: (rowIndex: number, colIndex: number) => {
+        set((state) => {
+          const updatedFields = state.fields.map((row, index) =>
+            index === rowIndex
+              ? row.filter((_, jIndex) => jIndex !== colIndex)
+              : row,
+          );
+          if (updatedFields[rowIndex]?.length === 0) {
+            return {
+              fields: updatedFields.filter((_, i) => i !== rowIndex),
+            };
+          }
+          return { fields: updatedFields };
+        });
       },
       updateField: (
         rowIndex: number,
