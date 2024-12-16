@@ -62,24 +62,27 @@ const FieldOptionArranger: React.FC = () => {
     };
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragEnd={handleDragEnd}
-    >
-      <div className="flex flex-col gap-4">
-        {fields.map((fieldRow, rowIndex) => (
-          <FieldRow
-            key={`row-${rowIndex}`}
-            fieldRow={fieldRow}
-            rowIndex={rowIndex}
-            addField={handleAddField(rowIndex)}
-            removeField={removeField(rowIndex)}
-            updateField={handleUpdateField(rowIndex)}
-          />
-        ))}
-      </div>
-    </DndContext>
+    <div>
+      <h1 className="mb-4 text-2xl font-semibold">Rearrange Fields</h1>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="flex flex-col gap-4">
+          {fields.map((fieldRow, rowIndex) => (
+            <FieldRow
+              key={`row-${rowIndex}`}
+              fieldRow={fieldRow}
+              rowIndex={rowIndex}
+              addField={handleAddField(rowIndex)}
+              removeField={removeField(rowIndex)}
+              updateField={handleUpdateField(rowIndex)}
+            />
+          ))}
+        </div>
+      </DndContext>
+    </div>
   );
 };
 
