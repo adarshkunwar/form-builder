@@ -38,13 +38,13 @@ type TFieldCollection = TFieldRow[];
 const FormCodeEditor: React.FC = () => {
 
 // use the fields from the props instead
-const fields = ${JSON.stringify(fields, null, 2)}
+const fields : TFieldCollection = ${JSON.stringify(fields, null, 2)}
 
 // Generate Zod Schema
 const generateZodSchema = (data: TFieldCollection) => {
   const schema: Record<string, z.ZodType> = {};
-  data.forEach((field: TField) => {
-    let fieldSchema = z.string();
+  data.flat().forEach((field: TField) => {
+    let fieldSchema : z.ZodType<any> = z.string();
 
     if (field.type === "date-picker") {
       fieldSchema = z.string().optional(); // Assume ISO string for date
@@ -54,7 +54,9 @@ const generateZodSchema = (data: TFieldCollection) => {
 
     // Add required validation if needed
     if (field.isRequired) {
-      fieldSchema = fieldSchema.nonempty("This field is required");
+      fieldSchema = fieldSchema.refine((val) => val !== undefined && val !== "", {
+        message: "This field is required",
+      });
     } else {
       fieldSchema = fieldSchema.optional();
     }
@@ -116,15 +118,6 @@ return (
                       return (
                         <input
                           type="date"
-                          {...controllerField}
-                          disabled={field.isDisabled}
-                          className={field.className}
-                        />
-                      );
-                    case "file-input":
-                      return (
-                        <input
-                          type="file"
                           {...controllerField}
                           disabled={field.isDisabled}
                           className={field.className}
