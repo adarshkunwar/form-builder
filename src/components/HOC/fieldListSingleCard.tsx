@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TField } from "@/types/field";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -57,6 +58,16 @@ export default function FieldOptionArrangeSingleCard({
     },
   });
 
+  useEffect(() => {
+    reset({
+      name: field.name || "",
+      placeholder: field.placeholder || "",
+      className: field.className || "",
+      description: field.description || "",
+      isDisabled: field.isDisabled ?? false,
+    });
+  }, [field, reset]);
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
     updateField({
@@ -89,7 +100,7 @@ export default function FieldOptionArrangeSingleCard({
             <Input
               id="name"
               {...register("name")}
-              className="col-span-3"
+              className="col-span-3 text-black"
               placeholder="Enter your full name"
             />
             {errors.name && (
@@ -106,7 +117,7 @@ export default function FieldOptionArrangeSingleCard({
             <Input
               id="placeholder"
               {...register("placeholder")}
-              className="col-span-3"
+              className="col-span-3 text-black"
               placeholder="Enter your "
             />
             {errors.name && (

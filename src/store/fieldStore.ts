@@ -69,11 +69,11 @@ export const useFieldStore = create<FieldStore>()((set) => ({
       const targetRowIndex = rowNumber ?? state.fields.length;
       const newField: TField = {
         id: Date.now(),
-        name: "",
+        name: `Field ${state.fields.length + 1}`,
         rowNumber: targetRowIndex,
         type: fieldType,
         description: "Defualt description",
-        placeholder: "",
+        placeholder: `enter ${fieldType} here`,
         className: "",
         isRequired: false,
         isDisabled: false,
