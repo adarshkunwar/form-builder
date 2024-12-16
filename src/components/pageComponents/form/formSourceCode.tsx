@@ -16,15 +16,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const fieldsArray = [
 "checkbox",
 "date-picker",
-// "file-input",
 "input",
-// "input-otp",
-// "multi-select",
 "password",
-// "phone",
-// "select",
-// "slider",
-// "switch",
 ] as const;
 
 type FieldType = (typeof fieldsArray)[number];
@@ -89,11 +82,11 @@ const onSubmit = (data: any) => {
 return (
   <form onSubmit={handleSubmit(onSubmit)}>
     {fields.map((row, rowIndex) => (
-      <div key={rowIndex} className="flex" style={{ marginBottom: "20px" }}>
+      <div key={rowIndex} style={{ marginBottom: "20px", display: "flex" }}>
         {row.map((field) => (
           <div key={field.id} style={{ marginBottom: "10px" }}>
             <label>
-              {field.name || field.type}
+              {field.description}
               <Controller
                 name={field.id.toString()}
                 control={control}
@@ -153,7 +146,7 @@ return (
               />
             </label>
             {errors[field.id] && (
-              <p style={{ color: "red" }}>{errors[field.id].message}</p>
+              <p style={{ color: "red" }}>{errors[field.id]?.message?.toString()}</p>
             )}
           </div>
         ))}
