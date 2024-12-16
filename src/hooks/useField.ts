@@ -4,6 +4,7 @@ import { TField } from "@/types/field";
 
 export const useField = (initialField?: Partial<TField>) => {
   const [field, setField] = React.useState<TField>({
+    id: 0,
     rowNumber: 0,
     type: "input",
     description: "",
@@ -24,6 +25,7 @@ export const useField = (initialField?: Partial<TField>) => {
 
   const resetField = () => {
     setField({
+      id: 0,
       rowNumber: 0,
       type: "input",
       description: "",

@@ -16,11 +16,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 const fieldsArray = [
 "checkbox",
 "date-picker",
-"file-input",
+// "file-input",
 "input",
 // "input-otp",
 // "multi-select",
-// "password",
+"password",
 // "phone",
 // "select",
 // "slider",
@@ -55,8 +55,6 @@ const generateZodSchema = (data: TFieldCollection) => {
 
     if (field.type === "date-picker") {
       fieldSchema = z.string().optional(); // Assume ISO string for date
-    } else if (field.type === "file-input") {
-      fieldSchema = z.any().optional(); // Files cannot be directly validated
     } else if (field.type === "checkbox") {
       fieldSchema = z.boolean();
     }
@@ -111,6 +109,16 @@ return (
                           className={field.className}
                         />
                       );
+                      case "password":
+                        return (
+                          <input
+                            type="password"
+                            {...controllerField}
+                            placeholder={field.placeholder}
+                            disabled={field.isDisabled}
+                            className={field.className}
+                          />
+                        );
                     case "date-picker":
                       return (
                         <input
