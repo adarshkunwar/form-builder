@@ -1,13 +1,7 @@
 "use client";
-import React, { useEffect } from "react";
-import { useFieldStore } from "@/store/fieldStore";
+import React from "react";
 
 export function StoreInitializer() {
-  useEffect(() => {
-    // Hydrate store if needed
-    useFieldStore.persist.rehydrate();
-  }, []);
-
   return null;
 }
 
