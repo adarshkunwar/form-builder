@@ -20,12 +20,15 @@ import { z } from "zod";
 
 // Zod validation schema
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  placeholder: z.string(),
-  className: z.string(),
+  name: z
+    .string()
+    .min(2, { message: "Name must be at least 2 characters" })
+    .optional(),
+  placeholder: z.string().optional(),
+  className: z.string().optional(),
   description: z.string().optional(),
-  isRequired: z.boolean(),
-  isDisabled: z.boolean(),
+  isRequired: z.boolean().optional(),
+  isDisabled: z.boolean().optional(),
 });
 
 type FieldOptionArrangeSingleCardProps = {
@@ -45,12 +48,12 @@ export default function FieldOptionArrangeSingleCard({
   } = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      placeholder: "",
-      className: "",
-      description: "",
-      isRequired: true,
-      isDisabled: false,
+      name: field.name || "",
+      placeholder: field.placeholder || "",
+      className: field.className || "",
+      description: field.description || "",
+      isRequired: field.isDisabled || true,
+      isDisabled: field.isDisabled || false,
     },
   });
 

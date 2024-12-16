@@ -10,7 +10,7 @@ const FieldRow = ({ fieldRow }: { fieldRow: TFieldRow }) => {
         <Field
           id={i}
           key={i}
-          Name={field.Name}
+          name={field.name}
           className={field.className}
           description={field.description}
           isDisabled={field.isDisabled}

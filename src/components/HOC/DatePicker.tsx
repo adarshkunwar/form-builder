@@ -3,21 +3,21 @@ import { TField } from "@/types/field";
 
 const DatePickerField = ({ field }: { field: TField }) => {
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`Date Picker (${field.Name}): `, event.target.value);
+    console.log(`Date Picker (${field.name}): `, event.target.value);
   };
 
   return (
     <div className="mb-4">
       <label
-        htmlFor={field.Name}
+        htmlFor={field.name}
         className="block text-sm font-medium text-gray-700"
       >
         {field.description}{" "}
         {field.isRequired && <span className="text-red-500">*</span>}
       </label>
       <input
-        id={field.Name}
-        name={field.Name}
+        id={field.name}
+        name={field.name}
         type="date"
         placeholder={field.placeholder}
         className={`mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm ${

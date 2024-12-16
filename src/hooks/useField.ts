@@ -9,7 +9,7 @@ export const useField = (initialField?: Partial<TField>) => {
     description: "",
     placeholder: "",
     className: "",
-    Name: "",
+    name: "",
     isRequired: false,
     isDisabled: false,
     ...initialField,
@@ -29,7 +29,7 @@ export const useField = (initialField?: Partial<TField>) => {
       description: "",
       placeholder: "",
       className: "",
-      Name: "",
+      name: "",
       isRequired: false,
       isDisabled: false,
     });

@@ -9,7 +9,7 @@ export type TField = {
   description: string;
   placeholder: string;
   className: string;
-  Name: string;
+  name: string;
   isRequired: boolean;
   isDisabled: boolean;
 };

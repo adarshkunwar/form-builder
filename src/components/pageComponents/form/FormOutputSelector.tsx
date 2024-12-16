@@ -6,7 +6,7 @@ import FormCodePreview from "./FormCodeEditor";
 
 const FormOutputSelector = () => {
   return (
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="account" className="w-full">
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="output">OUTPUT</TabsTrigger>
         <TabsTrigger value="json">JSON</TabsTrigger>

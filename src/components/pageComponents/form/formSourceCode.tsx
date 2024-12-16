@@ -35,7 +35,7 @@ type: FieldType;
 description: string;
 placeholder: string;
 className: string;
-Name: string;
+name: string;
 isRequired: boolean;
 isDisabled: boolean;
 };
@@ -95,7 +95,7 @@ return (
         {row.map((field) => (
           <div key={field.id} style={{ marginBottom: "10px" }}>
             <label>
-              {field.Name || field.type}
+              {field.name || field.type}
               <Controller
                 name={field.id.toString()}
                 control={control}

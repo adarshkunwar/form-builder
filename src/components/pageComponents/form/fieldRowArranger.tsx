@@ -41,7 +41,6 @@ const FieldOptionArranger: React.FC = () => {
       .split("-")
       .map(Number);
 
-    // Reorder fields
     reorderFields(activeRowIndex, activeColIndex, overRowIndex, overColIndex);
   };
 
