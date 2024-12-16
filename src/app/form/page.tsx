@@ -1,7 +1,7 @@
 "use client";
 import FieldOptionCollection from "@/components/HOC/fieldOptionCollection";
 import FieldRowArranger from "@/components/pageComponents/form/fieldRowArranger";
-import FieldOptionRenderer from "@/components/pageComponents/form/fieldSelector";
+import FormOutputSelector from "@/components/pageComponents/form/FormOutputSelector";
 import { closestCorners, DndContext } from "@dnd-kit/core";
 
 const FormPage = () => {
@@ -13,10 +13,9 @@ const FormPage = () => {
         </div>
         <div className="col-span-4">
           <FieldRowArranger />
-          {/* <FieldOptionArranger /> */}
         </div>
         <div className="col-span-6">
-          <FieldOptionRenderer />
+          <FormOutputSelector />
         </div>
       </div>
     </DndContext>

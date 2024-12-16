@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FieldOptionRenderer from "./fieldSelector";
 import FormJson from "./formJson";
+import FormCodePreview from "./FormCodeEditor";
 
 const FormOutputSelector = () => {
   return (
@@ -34,7 +35,7 @@ const FormOutputSelector = () => {
       <TabsContent value="code">
         <Card>
           <CardContent className="space-y-2">
-            <FormJson />
+            <FormCodePreview />
           </CardContent>
         </Card>
       </TabsContent>
