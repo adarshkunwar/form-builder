@@ -7,7 +7,7 @@ import { TFieldCollection } from "@/types/field";
 
 const FormSourceCode = ({ fields }: { fields: TFieldCollection }) => {
   const [isCopied, setIsCopied] = useState(false);
-  const sourceCode = `// to use this install hookform, react-hook-form and zod
+  const sourceCode = `// to use this install hookform, tailwind, shadcn, react-hook-form and zod
 import React from "react";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";

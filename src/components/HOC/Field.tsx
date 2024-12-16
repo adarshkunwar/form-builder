@@ -8,6 +8,8 @@ const Field = ({ ...field }: TField) => {
   switch (field.type) {
     case "input":
       return <InputField field={field} />;
+    case "password":
+      return <InputField field={field} />;
     case "checkbox":
       return <CheckboxField field={field} />;
     case "date-picker":

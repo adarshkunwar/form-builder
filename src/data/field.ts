@@ -1,11 +1,11 @@
 export const fieldsArray = [
   "checkbox",
   "date-picker",
-  "file-input",
+  // "file-input",
   "input",
   // "input-otp",
   // "multi-select",
-  // "password",
+  "password",
   // "phone",
   // "select",
   // "slider",
