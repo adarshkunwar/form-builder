@@ -50,7 +50,15 @@ const generateZodSchema = (data: TFieldCollection) => {
       fieldSchema = z.string().optional(); // Assume ISO string for date
     } else if (field.type === "checkbox") {
       fieldSchema = z.boolean();
-    }
+      } else if (field.type === "password") {
+        fieldSchema = z
+          .string()
+          .min(8, "Password must be at least 8 characters")
+          .max(20, "Password cannot exceed 20 characters")
+          .regex(/[a-z]/, "Password must include at least one lowercase letter")
+          .regex(/[A-Z]/, "Password must include at least one uppercase letter")
+          .regex(/[0-9]/, "Password must include at least one number");
+      }
 
     // Add required validation if needed
     if (field.isRequired) {
